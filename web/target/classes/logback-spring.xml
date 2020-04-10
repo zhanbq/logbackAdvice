@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+    <!-- lOGGER PATTERN 根据个⼈喜好选择匹配 -->
+    <property name="logPattern"
+              value="logback:[%-5level] [%date{HH:mm:ss.SSS}] %logger{96}
+[%line] [%thread]- %msg%n"></property>
+    <!-- 控制台的标准输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+    </appender>
+    <!-- This example configuration is probably most unreliable under failure
+   conditions but wont block your application at all -->
+    <appender name="rmxcLogAppender"
+              class="com.rmxc.utils.logcollector.logback.appender.LogbackCustomAppender">
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logPattern}</pattern>
+        </encoder>
+        <!-- we don't care how the log messages will be partitioned -->
+        <requestStrategy>okhttp3</requestStrategy>
+
+        <hosts>127.0.0.1:8004</hosts>
+        <path>/testlog</path>
+        <appid>WEB采集端</appid>
+        <securityKey>5555dsads</securityKey>
+
+        <loadbalanceRule class="com.rmxc.utils.logcollector.loadbalancer.RoundRobinRule"></loadbalanceRule>
+
+    </appender>
+    <logger name="rmxcLogAppender">
+        <appender-ref ref="rmxcLogAppender"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="rmxcLogAppender"/>
+    </root>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+    <!-- lOGGER PATTERN 根据个⼈喜好选择匹配 -->
+    <property name="logPattern"
+              value="logback-user:[ %-5level] [%date{HH:mm:ss.SSS}] %logger{96}
+[%line] [%thread]- %msg%n"></property>
+    <!-- 控制台的标准输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${logPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
