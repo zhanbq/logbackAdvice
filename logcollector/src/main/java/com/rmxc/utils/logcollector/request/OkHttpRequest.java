@@ -3,13 +3,10 @@ package com.rmxc.utils.logcollector.request;
 import com.alibaba.fastjson.JSON;
 import com.rmxc.utils.logcollector.loadbalancer.Rule;
 import okhttp3.*;
-import org.springframework.core.io.ByteArrayResource;
-import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +31,7 @@ public class OkHttpRequest implements Request {
             return;
         }
 
-        MediaType mediaType = MediaType.get("application/json; charset=utf-8");
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.create(mediaType, JSON.toJSONString(record));
         String url = loadbalanceRule.choose().getHost();
         url = getUrlWithQueryString(url,record.buildParams());
@@ -43,7 +40,7 @@ public class OkHttpRequest implements Request {
                 .post(requestBody)
                 .build();
         Call call = okHttpClient.newCall(postRequest);
-        System.out.println("loadbalanceRule = [" + loadbalanceRule + "], record = [" + record + "], e = [" + event + "], failedDeliveryCallback = [" + failedDeliveryCallback + "]");
+//        System.out.println("loadbalanceRule = [" + loadbalanceRule + "], record = [" + record + "], e = [" + event + "], failedDeliveryCallback = [" + failedDeliveryCallback + "]");
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

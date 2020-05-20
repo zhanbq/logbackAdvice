@@ -20,6 +20,7 @@ public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppen
     protected Rule loadbalanceRule = null;
 
     protected String requestStrategy;
+    protected String serverName;
     protected String hosts;
     protected String path;
     protected String appid;
@@ -27,13 +28,17 @@ public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppen
 
     protected boolean checkPrerequisites() {
         boolean errorFree = true;
-
+        addInfo("LogbackCustomAppender check config");
         if (hosts == null) {
             addError("No hosts set for the appender named [\"" + name + "\"].");
             errorFree = false;
         }
         if (encoder == null) {
             addError("No encoder set for the appender named [\"" + name + "\"].");
+            errorFree = false;
+        }
+        if (serverName==null || serverName =="") {
+            addError("No serverName set for the appender named [\"" + name + "\"].");
             errorFree = false;
         }
         if (appid == null) {
@@ -72,6 +77,14 @@ public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppen
 
     public void setSecurityKey(String securityKey) {
         this.securityKey = securityKey;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     protected Long getTimestamp(E e) {

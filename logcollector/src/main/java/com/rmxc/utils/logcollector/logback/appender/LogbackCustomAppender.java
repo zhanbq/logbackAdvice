@@ -1,5 +1,6 @@
 package com.rmxc.utils.logcollector.logback.appender;
 
+import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.spi.AppenderAttachableImpl;
 import com.alibaba.fastjson.JSON;
@@ -27,14 +28,14 @@ public class LogbackCustomAppender<E> extends LogbackCustomAppenderConfig<E> {
 
     @Override
     protected void append(E e) {
-        System.out.println("append =========");
+//        System.out.println("append =========");
         final byte[] payload = encoder.encode(e);
 
         BASE64Encoder base64Encoder = new BASE64Encoder();
         String encode = base64Encoder.encode(payload);
         final Long timestamp = isAppendTimestamp() ? getTimestamp(e) : null;
 
-        LogRecord<Object> record = new LogRecord<>(payload,timestamp, appid, securityKey);
+        LogRecord<byte[]> record = new LogRecord<>(payload,System.currentTimeMillis(),serverName, appid, securityKey,((LoggingEvent) e).getLevel().levelStr);
         if (request != null) {
             request.request(loadbalanceRule,payload,record, e, failedDeliveryCallback);
         } else {

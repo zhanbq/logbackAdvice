@@ -1,5 +1,7 @@
 package com.rmxc.utils.logcollector.request;
 
+import ch.qos.logback.classic.Level;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,19 +9,24 @@ import java.util.Map;
 public class LogRecord<T> implements Serializable {
 
 
-    private final T value;
+    private final T logContent;
 
     private final Long timestamp;
 
+    private final String serverName;
     private final String appid;
 
     private final String securityKey;
 
-    public LogRecord(T value, Long timestamp, String appid, String securityKey) {
+    private final String logLevel;
+
+    public LogRecord(T logContent, Long timestamp,String serverName , String appid, String securityKey,String logLevel) {
         this.timestamp = timestamp;
         this.appid = appid;
         this.securityKey = securityKey;
-        this.value = value;
+        this.logContent = logContent;
+        this.serverName = serverName;
+        this.logLevel = logLevel;
     }
     public Map<String, String> buildParams(){
         Map<String, String> params = new HashMap<String, String>();
@@ -29,12 +36,16 @@ public class LogRecord<T> implements Serializable {
         return params;
     }
 
-    public T getValue() {
-        return value;
+    public T getLogContent() {
+        return logContent;
     }
 
     public Long getTimestamp() {
         return timestamp;
+    }
+
+    public String getServerName() {
+        return serverName;
     }
 
     public String getAppid() {
@@ -43,5 +54,9 @@ public class LogRecord<T> implements Serializable {
 
     public String getSecurityKey() {
         return securityKey;
+    }
+
+    public String getLogLevel() {
+        return logLevel;
     }
 }

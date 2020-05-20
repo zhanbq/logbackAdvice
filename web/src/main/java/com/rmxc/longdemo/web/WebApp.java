@@ -21,7 +21,17 @@ public class WebApp {
     public String test(String a){
 
         if(a.equals("1")){
-            RuntimeException e = new RuntimeException("错误");
+            RuntimeException e = new RuntimeException("错误zzz");
+            log.error("error :{}",e);
+            return "error";
+        }
+        if(a.equals("2")){
+            RuntimeException e = new RuntimeException("错误bbb");
+            log.error("error :{}",e);
+            return "error";
+        }
+        if(a.equals("3")){
+            RuntimeException e = new RuntimeException("错误qqq");
             log.error("error :{}",e);
             return "error";
         }

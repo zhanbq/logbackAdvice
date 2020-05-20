@@ -5,6 +5,7 @@ E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\lo
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\RequestStrategy.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\LogLoadBalancer.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\LogServer.java
+E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\logback\appender\MyLogbackAppender.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\RequestFactory.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\LogLoadBanlanceInterceptor.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\Rule.java

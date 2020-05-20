@@ -20,6 +20,7 @@ com\rmxc\utils\logcollector\request\Request.class
 com\rmxc\utils\logcollector\request\OkHttpRequest$SingletonRequest.class
 com\rmxc\utils\logcollector\loadbalancer\LogLoadBalancer.class
 com\rmxc\utils\logcollector\request\OkHttpRequest.class
+com\rmxc\utils\logcollector\logback\appender\MyLogbackAppender.class
 com\rmxc\utils\logcollector\request\RequestFactory.class
 com\rmxc\utils\logcollector\logback\appender\LogbackCustomAppender.class
 com\rmxc\utils\logcollector\request\LogRecord.class
