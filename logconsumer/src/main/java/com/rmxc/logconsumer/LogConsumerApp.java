@@ -18,11 +18,11 @@ import java.io.IOException;
 @RestController
 @Slf4j
 @ComponentScan(basePackages = {"com.rmxc.logconsumer.*"})
-public class UserApp {
+public class LogConsumerApp {
     public static void main(String[] args) {
-        new SpringApplicationBuilder(UserApp.class).run(args);
+        new SpringApplicationBuilder(LogConsumerApp.class).run(args);
 
-        log.info("test2222222");
+        log.info("start success");
     }
 
     @PostMapping("/testlog")

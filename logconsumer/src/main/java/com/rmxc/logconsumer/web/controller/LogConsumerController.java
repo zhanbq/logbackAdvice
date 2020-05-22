@@ -7,6 +7,7 @@ import com.rmxc.logconsumer.bean.LogBean;
 import com.rmxc.logconsumer.bean.LogRecord;
 import com.rmxc.logconsumer.business.ElasticsearchBusiness;
 import com.rmxc.logconsumer.enumeration.LogLevelEnum;
+import com.rmxc.tech.dagger.runtime.web.bean.result.ApiBaseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.indices.CreateIndexResponse;
@@ -26,15 +27,15 @@ import java.util.Date;
 @Slf4j
 @RestController
 @RequestMapping("/logs/consumer")
-public class LogConsumerController {
+public class LogConsumerController extends LogConsumerBaseController{
 
     @Autowired
     ElasticsearchBusiness esBusiness;
 
     @PostMapping("/logback")
-    public String logback(@RequestBody LogRecord<byte[]> logRecord, HttpServletRequest request) throws IOException {
+    public ApiBaseResult logback(@RequestBody LogRecord<byte[]> logRecord, HttpServletRequest request) throws IOException {
         if(null == logRecord){
-            return "no message";
+            return failed();
         }
         byte[] base64EncoderEventsBytes = logRecord.getLogContent();
         String base64Encoder = new String(base64EncoderEventsBytes,"UTF-8");
@@ -53,13 +54,13 @@ public class LogConsumerController {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
         String format = simpleDateFormat.format(new Date(logRecord.getTimestamp()));
-        String index = logRecord.getServerName()+"-logtest1-"+format;
+        String index = logRecord.getServerName()+"-"+format;
         index = index.toLowerCase();
-        String alias = logRecord.getServerName()+"-logtest1";
+        String alias = logRecord.getServerName();
         alias=alias.toLowerCase();
         boolean existIndex = esBusiness.isExistIndex(index);
         if(!existIndex){
-            CreateIndexResponse createIndexResponse = esBusiness.createIndex(index, alias);
+            return failed();
         }
         LogBean logBean = new LogBean();
         logBean.setServerName(logRecord.getServerName());
@@ -68,6 +69,6 @@ public class LogConsumerController {
         logBean.setLogLevel(logRecord.getLogLevel());
         IndexResponse indexResponse = esBusiness.addDocument(index, logBean);
         log.info(JSON.toJSONString(indexResponse));
-        return JSON.toJSONString(logRecord);
+        return success();
     }
 }

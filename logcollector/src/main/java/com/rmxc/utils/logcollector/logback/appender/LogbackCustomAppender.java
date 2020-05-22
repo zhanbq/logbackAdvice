@@ -9,6 +9,8 @@ import com.rmxc.utils.logcollector.request.FailedRequestCallback;
 import com.rmxc.utils.logcollector.request.LogRecord;
 import sun.misc.BASE64Encoder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -37,7 +39,7 @@ public class LogbackCustomAppender<E> extends LogbackCustomAppenderConfig<E> {
 
         LogRecord<byte[]> record = new LogRecord<>(payload,System.currentTimeMillis(),serverName, appid, securityKey,((LoggingEvent) e).getLevel().levelStr);
         if (request != null) {
-            request.request(loadbalanceRule,payload,record, e, failedDeliveryCallback);
+            request.request(loadbalanceRule,payload,record, e,logSavePath, failedDeliveryCallback);
         } else {
             failedDeliveryCallback.onFailedRequest(e, null);
         }
@@ -91,9 +93,19 @@ public class LogbackCustomAppender<E> extends LogbackCustomAppenderConfig<E> {
     public void start(){
         // only error free appenders should be activated
         if (!checkPrerequisites()) return;
+        if(!regist(serverName,indexRegistPath)){
+            addError("索引创建失败 create index failed");
+            return;
+        }
         super.start();
     }
-
+    public boolean regist(String serverName,String requestPath){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        String month = simpleDateFormat.format(new Date());
+        String index = serverName.toLowerCase() +"-"+ month;
+        String alias = serverName.toLowerCase();
+        return request.registIndex(loadbalanceRule,requestPath,index,alias);
+    }
     @Override
     public void stop() {
         super.stop();

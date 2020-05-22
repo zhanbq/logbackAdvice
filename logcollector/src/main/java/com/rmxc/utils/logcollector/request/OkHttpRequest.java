@@ -1,6 +1,7 @@
 package com.rmxc.utils.logcollector.request;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.rmxc.utils.logcollector.loadbalancer.Rule;
 import okhttp3.*;
 
@@ -26,14 +27,14 @@ public class OkHttpRequest implements Request {
 
 
     @Override
-    public <T,E> void request(Rule loadbalanceRule, byte[] payload, LogRecord<T> record, E event, FailedRequestCallback<E> failedDeliveryCallback) {
+    public <T,E> void request(Rule loadbalanceRule, byte[] payload, LogRecord<T> record, E event, String requestPath,FailedRequestCallback<E> failedDeliveryCallback) {
         if(null == okHttpClient || null == loadbalanceRule){
             return;
         }
 
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.create(mediaType, JSON.toJSONString(record));
-        String url = loadbalanceRule.choose().getHost();
+        String url = loadbalanceRule.choose().getHost()+requestPath;
         url = getUrlWithQueryString(url,record.buildParams());
         okhttp3.Request postRequest = new okhttp3.Request.Builder()
                 .url(url)
@@ -52,6 +53,30 @@ public class OkHttpRequest implements Request {
                 //do nothing
             }
         });
+    }
+
+    @Override
+    public <E> Boolean registIndex(Rule loadbalanceRule,String requestPath,String index, String alias) {
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        JSONObject registIndexBody = new JSONObject();
+        registIndexBody.put("index",index);
+        registIndexBody.put("alias",alias);
+        RequestBody requestBody = RequestBody.create(mediaType, JSON.toJSONString(registIndexBody));
+        String url = loadbalanceRule.choose().getHost() + requestPath;
+        okhttp3.Request postRequest = new okhttp3.Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Call call = okHttpClient.newCall(postRequest);
+//        System.out.println("loadbalanceRule = [" + loadbalanceRule + "], record = [" + record + "], e = [" + event + "], failedDeliveryCallback = [" + failedDeliveryCallback + "]");
+        try {
+            Response response = call.execute();
+            return response.isSuccessful();
+        } catch (IOException e) {
+            return false;
+        }finally {
+            //单例 不关闭
+        }
     }
 
     @Override

@@ -11,6 +11,9 @@ import com.rmxc.utils.logcollector.request.OkHttpRequest;
 import com.rmxc.utils.logcollector.request.Request;
 import com.rmxc.utils.logcollector.request.RequestFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppenderBase<E> implements AppenderAttachable<E> {
 
     protected boolean appendTimestamp = true;
@@ -22,7 +25,10 @@ public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppen
     protected String requestStrategy;
     protected String serverName;
     protected String hosts;
-    protected String path;
+
+    protected String logSavePath;
+    protected String indexRegistPath;
+
     protected String appid;
     protected String securityKey;
 
@@ -59,9 +65,16 @@ public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppen
             addInfo("No loadbalanceRule set for the appender named [\""+name+"\"]. Using default loadbalanceRule:RoundRobinRule.");
             loadbalanceRule = new RoundRobinRule();
         }
-        loadbalanceRule.setLogLoadBalancer(LogLoadBalancer.getSingletonLB(hosts,path));
+        loadbalanceRule.setLogLoadBalancer(LogLoadBalancer.getSingletonLB(hosts));
+
+        if(indexRegistPath == null || indexRegistPath == ""){
+            addError("No indexRegistPath set for the appender named [\""+name+"\"].");
+        }
+
         return errorFree;
     }
+
+
 
     public void setEncoder(Encoder<E> encoder) {
         this.encoder = encoder;
@@ -106,7 +119,11 @@ public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppen
         this.requestStrategy = requestStrategy;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setLogSavePath(String logSavePath) {
+        this.logSavePath = logSavePath;
+    }
+
+    public void setIndexRegistPath(String indexRegistPath) {
+        this.indexRegistPath = indexRegistPath;
     }
 }

@@ -21,12 +21,13 @@
         </encoder>
         <!-- we don't care how the log messages will be partitioned -->
         <requestStrategy>okhttp3</requestStrategy>
-        <serverName>webtestapp</serverName>
-        <hosts>127.0.0.1:8004</hosts>
-        <path>/logs/consumer/logback</path>
+        <serverName>log-test-web-v2</serverName>
+        <hosts>127.0.0.1:20209</hosts>
+        <logSavePath>/logs/consumer/logback</logSavePath>
+        <indexRegistPath>/logs/index/regist</indexRegistPath>
         <appid>WEB采集端</appid>
         <securityKey>5555dsads</securityKey>
-
+        <indexRegistPath></indexRegistPath>
         <loadbalanceRule class="com.rmxc.utils.logcollector.loadbalancer.RoundRobinRule"></loadbalanceRule>
 
     </appender>

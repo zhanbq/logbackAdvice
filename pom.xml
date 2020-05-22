@@ -3,53 +3,99 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.6.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.rmxc.tech</groupId>
+        <artifactId>dagger-pom</artifactId>
+        <version>1.0.0</version>
     </parent>
     <groupId>com.rmxc.utils</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>parent</name>
     <description>logcollector project for rmxc</description>
     <packaging>pom</packaging>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <hbxhx.utils.version>1.2.0</hbxhx.utils.version>
+        <runtime.base.version>1.0.0</runtime.base.version>
+        <runtime.core.version>1.0.0</runtime.core.version>
+        <runtime.db.version>1.0.0</runtime.db.version>
+        <runtime.file.version>1.0.0</runtime.file.version>
+        <runtime.cache.version>1.0.0</runtime.cache.version>
+        <runtime.web.version>1.0.0</runtime.web.version>
+        <runtime.notify.version>1.0.0</runtime.notify.version>
     </properties>
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <layout>default</layout>
-            <!-- 是否开启发布版构件下载 -->
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <!-- 是否开启快照版构件下载 -->
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+
     <dependencies>
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <groupId>com.hbxhx.utils</groupId>
+            <artifactId>hbxhx-utils</artifactId>
+            <version>${hbxhx.utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.runtime.base</groupId>
+            <artifactId>dagger-runtime-base</artifactId>
+            <version>${runtime.base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.runtime.core</groupId>
+            <artifactId>dagger-runtime-core</artifactId>
+            <version>${runtime.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.runtime.db</groupId>
+            <artifactId>dagger-runtime-db</artifactId>
+            <version>${runtime.db.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.runtime.file</groupId>
+            <artifactId>dagger-runtime-file</artifactId>
+            <version>${runtime.file.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.runtime.cache</groupId>
+            <artifactId>dagger-runtime-cache</artifactId>
+            <version>${runtime.cache.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.rmxc.tech.dagger.runtime.notify</groupId>
+            <artifactId>dagger-runtime-notify</artifactId>
+            <version>${runtime.notify.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <optional>true</optional>
+            <version>4.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.base</groupId>
+            <artifactId>dagger-base</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rmxc.tech.dagger.notify</groupId>
+            <artifactId>dagger-notify</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>Finchley.SR1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -64,6 +110,6 @@
     <modules>
         <!--<module>logcollector</module>-->
         <module>web</module>
-        <module>user</module>
+        <module>logconsumer</module>
     </modules>
 </project>
