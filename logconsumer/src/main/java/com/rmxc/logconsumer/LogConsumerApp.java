@@ -19,6 +19,11 @@ import java.io.IOException;
 @Slf4j
 @ComponentScan(basePackages = {"com.rmxc.logconsumer.*"})
 public class LogConsumerApp {
+    /**
+     * nohup java $JAVA_OPTS -jar logconsumer-1.0.0.jar --spring.profiles.active=dev > /dev/null 2>&1 &
+     * @param args
+     */
+
     public static void main(String[] args) {
         new SpringApplicationBuilder(LogConsumerApp.class).run(args);
 

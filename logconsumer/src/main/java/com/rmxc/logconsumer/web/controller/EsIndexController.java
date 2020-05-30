@@ -40,8 +40,6 @@ public class EsIndexController extends LogConsumerBaseController{
         boolean existIndex = esBusiness.isExistIndex(esIndexBean.getIndex().toLowerCase());
         if(!existIndex){
             CreateIndexResponse index = esBusiness.createIndex(esIndexBean.getIndex(), esIndexBean.getAlias());
-        }else{
-            return failed();
         }
         return success();
     }
