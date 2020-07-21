@@ -27,3 +27,5 @@ target
 
 data/*
 logPath_IS_UNDEFINED/
+
+**/.idea/
