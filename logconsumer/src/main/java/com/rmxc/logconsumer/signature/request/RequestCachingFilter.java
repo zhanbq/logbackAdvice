@@ -68,7 +68,7 @@ public class RequestCachingFilter extends OncePerRequestFilter {
         requestJ.put("path-info", request.getPathInfo());
         requestJ.put("context-path", request.getContextPath());
 
-        log.info("Request-Info: " + JSON.toJSONString(requestJ, SerializerFeature.PrettyFormat));
+        log.debug("Request-Info: " + JSON.toJSONString(requestJ, SerializerFeature.PrettyFormat));
     }
 
 }

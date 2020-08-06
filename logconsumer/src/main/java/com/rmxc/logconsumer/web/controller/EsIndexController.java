@@ -4,6 +4,7 @@ import com.rmxc.logconsumer.bean.EsIndexBean;
 import com.rmxc.logconsumer.business.ElasticsearchBusiness;
 import com.rmxc.tech.dagger.runtime.web.bean.result.ApiBaseResult;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -37,10 +38,21 @@ public class EsIndexController extends LogConsumerBaseController{
             return success();
 
         }
-        boolean existIndex = esBusiness.isExistIndex(esIndexBean.getIndex().toLowerCase());
-        if(!existIndex){
-            CreateIndexResponse index = esBusiness.createIndex(esIndexBean.getIndex(), esIndexBean.getAlias());
+        try {
+            boolean existIndex = esBusiness.isExistIndex(esIndexBean.getIndex().toLowerCase());
+            if(!existIndex){
+                CreateIndexResponse index = esBusiness.createIndex(esIndexBean.getIndex(), esIndexBean.getAlias());
+            }
+        } catch (IOException e) {
+            log.error("索引创建失败 ,{}",e);
+            return failed();
         }
+//        try {
+//            AcknowledgedResponse acknowledgedResponse = esBusiness.putDateTypeMapping(esIndexBean.getIndex(), esIndexBean.getAlias());
+//        } catch (Exception e) {
+//            log.error("索引时间设置失败 ,{}",e);
+//            throw e;
+//        }
         return success();
     }
 

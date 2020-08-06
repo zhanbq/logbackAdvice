@@ -17,6 +17,7 @@ public class ElasticSearchConfig {
     String esHost;
     @Value("${es.port}")
     Integer esPort;
+
     @Bean
     public RestHighLevelClient restHighLevelClient(){
         log.info("es restHighLevelClient init host:{}, port:{}",esHost,esPort);
@@ -27,4 +28,12 @@ public class ElasticSearchConfig {
 
         return restHighLevelClient;
     }
+
+//    @Bean
+//    public RestClient restClient(){
+//        RestClient restClient = RestClient.builder(
+//                new HttpHost("localhost", 9200, "http")).build();
+//        return restClient;
+//    }
+
 }
