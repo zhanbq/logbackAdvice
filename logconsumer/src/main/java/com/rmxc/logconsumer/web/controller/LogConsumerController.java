@@ -45,22 +45,15 @@ public class LogConsumerController extends LogConsumerBaseController{
         }
         byte[] base64EncoderEventsBytes = logRecord.getLogContent();
         String base64Encoder = new String(base64EncoderEventsBytes,"UTF-8");
-        log.info("base64Encoder:{}",JSON.toJSONString(base64Encoder));
+        log.info("日志输入:serverName:{}\n content:{}",logRecord.getServerName(),base64Encoder);
+
+        SimpleDateFormat ymFormat = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat hsmFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String mounth = ymFormat.format(new Date(logRecord.getTimestamp()));
+        String hms = hsmFormat.format(logRecord.getTimestamp());
 
 
-        if(logRecord.getLogLevel().equalsIgnoreCase(Level.ERROR.levelStr)){
-            try {
-                DingTalkUtils.sendMessage(logRecord.getServerName(),logRecord.getAppid(),base64Encoder);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            }
-        }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
-        String format = simpleDateFormat.format(new Date(logRecord.getTimestamp()));
-        String index = logRecord.getServerName()+"-"+format;
+        String index = logRecord.getServerName()+"-"+mounth;
         index = index.toLowerCase();
         String alias = logRecord.getServerName();
         alias=alias.toLowerCase();
@@ -71,10 +64,20 @@ public class LogConsumerController extends LogConsumerBaseController{
         LogBean logBean = new LogBean();
         logBean.setServerName(logRecord.getServerName());
         logBean.setContent(base64Encoder);
-        logBean.setLogTimestamp(logRecord.getTimestamp().toString());
+        logBean.setLogTimestamp(logRecord.getTimestamp());
         logBean.setLogLevel(logRecord.getLogLevel());
+        logBean.setLogTime(hms);
         IndexResponse indexResponse = esBusiness.addDocument(index, logBean);
-        log.info(JSON.toJSONString(indexResponse));
+        if(logRecord.getLogLevel().equalsIgnoreCase(Level.ERROR.levelStr)){
+            try {
+                DingTalkUtils.sendMessage(logRecord.getAppid(),logRecord.getServerName(),indexResponse.getIndex(),indexResponse.getId(),base64Encoder);
+            } catch (NoSuchAlgorithmException e) {
+                log.debug("发送钉钉失败 NoSuchAlgorithmException ",e);
+            } catch (InvalidKeyException e) {
+                log.debug("发送钉钉失败 InvalidKeyException ",e);
+            }
+        }
+//        log.debug(JSON.toJSONString(indexResponse));
         return success();
     }
 }

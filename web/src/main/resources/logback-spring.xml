@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds" debug="false">
-    <!-- lOGGER PATTERN 根据个⼈喜好选择匹配 -->
-    <property name="logPattern"
-              value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"></property>
-    <!--<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>-->
-    <!-- 控制台的标准输出 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>${logPattern}</pattern>
-        </encoder>
-    </appender>
-    <!-- This example configuration is probably most unreliable under failure
-   conditions but wont block your application at all -->
-    <appender name="rmxcLogAppender"
-              class="com.rmxc.utils.logcollector.logback.appender.LogbackCustomAppender">
+<configuration>
+    <jmxConfigurator/>
+    <springProperty scope="context" name="logLevel" source="log.common.level" />
+    <springProperty scope="context" name="logPath" source="log.common.path" />
+    <springProperty scope="context" name="serverName" source="spring.application.name" />
 
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${logPattern}</pattern>
-        </encoder>
-        <!-- we don't care how the log messages will be partitioned -->
-        <requestStrategy>okhttp3</requestStrategy>
-        <serverName>log-test-web-v2</serverName>
-        <hosts>127.0.0.1:20209</hosts>
-        <logSavePath>/logs/consumer/logback</logSavePath>
-        <indexRegistPath>/logs/index/regist</indexRegistPath>
-        <appid>WEB采集端</appid>
-        <securityKey>5555dsads</securityKey>
-        <indexRegistPath></indexRegistPath>
-        <loadbalanceRule class="com.rmxc.utils.logcollector.loadbalancer.RoundRobinRule"></loadbalanceRule>
+    <springProfile name="local">
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
 
-    </appender>
-    <logger name="rmxcLogAppender">
-        <appender-ref ref="rmxcLogAppender"/>
-    </logger>
-    <root level="INFO">
-        <appender-ref ref="rmxcLogAppender"/>
-    </root>
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </root>
+        <root level="${logLevel}">
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <appender name="rmxcLogAppender" class="com.rmxc.utils.logcollector.logback.appender.LogbackCustomAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+            <requestStrategy>okhttp3</requestStrategy>
+            <serverName>${serverName}</serverName>
+            <hosts>47.92.198.89:20209</hosts>
+            <logSavePath>/logs/consumer/logback</logSavePath>
+            <indexRegistPath>/logs/index/regist</indexRegistPath>
+            <appid>pplmc-biz</appid>
+            <securityKey>pplmc-biz</securityKey>
+
+            <loadbalanceRule class="com.rmxc.utils.logcollector.loadbalancer.RoundRobinRule"></loadbalanceRule>
+        </appender>
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
+
+        <root level="${logLevel}">
+<!--            <appender-ref ref="businessLogFile"/>-->
+<!--            <appender-ref ref="errorLogFile"/>-->
+            <appender-ref ref="rmxcLogAppender"/>
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
 </configuration>

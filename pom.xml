@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.rmxc.tech</groupId>
         <artifactId>dagger-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <groupId>com.rmxc.utils</groupId>
     <artifactId>parent</artifactId>
@@ -28,76 +28,80 @@
         <runtime.web.version>1.0.0</runtime.web.version>
         <runtime.notify.version>1.0.0</runtime.notify.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
 
-    <dependencies>
+            <dependency>
+                <groupId>com.hbxhx.utils</groupId>
+                <artifactId>hbxhx-utils</artifactId>
+                <version>${hbxhx.utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.runtime.base</groupId>
+                <artifactId>dagger-runtime-base</artifactId>
+                <version>${runtime.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.runtime.core</groupId>
+                <artifactId>dagger-runtime-core</artifactId>
+                <version>${runtime.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.runtime.db</groupId>
+                <artifactId>dagger-runtime-db</artifactId>
+                <version>${runtime.db.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.runtime.file</groupId>
+                <artifactId>dagger-runtime-file</artifactId>
+                <version>${runtime.file.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.runtime.cache</groupId>
+                <artifactId>dagger-runtime-cache</artifactId>
+                <version>${runtime.cache.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.hbxhx.utils</groupId>
-            <artifactId>hbxhx-utils</artifactId>
-            <version>${hbxhx.utils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.runtime.base</groupId>
-            <artifactId>dagger-runtime-base</artifactId>
-            <version>${runtime.base.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.runtime.core</groupId>
-            <artifactId>dagger-runtime-core</artifactId>
-            <version>${runtime.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.runtime.db</groupId>
-            <artifactId>dagger-runtime-db</artifactId>
-            <version>${runtime.db.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.runtime.file</groupId>
-            <artifactId>dagger-runtime-file</artifactId>
-            <version>${runtime.file.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.runtime.cache</groupId>
-            <artifactId>dagger-runtime-cache</artifactId>
-            <version>${runtime.cache.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.runtime.notify</groupId>
+                <artifactId>dagger-runtime-notify</artifactId>
+                <version>${runtime.notify.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.runtime.notify</groupId>
-            <artifactId>dagger-runtime-notify</artifactId>
-            <version>${runtime.notify.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <optional>true</optional>
+                <version>4.1.1</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <optional>true</optional>
-            <version>4.1.1</version>
-        </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.base</groupId>
+                <artifactId>dagger-base</artifactId>
+                <version>1.0.0</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.base</groupId>
-            <artifactId>dagger-base</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+            <dependency>
+                <groupId>com.rmxc.tech.dagger.notify</groupId>
+                <artifactId>dagger-notify</artifactId>
+                <version>1.0.0</version>
+            </dependency>
 
-        <dependency>
-            <groupId>com.rmxc.tech.dagger.notify</groupId>
-            <artifactId>dagger-notify</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.rmxc.utils</groupId>
+                <artifactId>logcollector</artifactId>
+                <version>1.1.60</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <version>Finchley.SR1</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-
-
-    </dependencies>
-
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

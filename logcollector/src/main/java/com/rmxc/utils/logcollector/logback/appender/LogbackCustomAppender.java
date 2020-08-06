@@ -3,7 +3,6 @@ package com.rmxc.utils.logcollector.logback.appender;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.spi.AppenderAttachableImpl;
-import com.alibaba.fastjson.JSON;
 import com.rmxc.utils.logcollector.logback.config.LogbackCustomAppenderConfig;
 import com.rmxc.utils.logcollector.request.FailedRequestCallback;
 import com.rmxc.utils.logcollector.request.LogRecord;
@@ -12,6 +11,7 @@ import sun.misc.BASE64Encoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LogbackCustomAppender<E> extends LogbackCustomAppenderConfig<E> {
@@ -30,14 +30,14 @@ public class LogbackCustomAppender<E> extends LogbackCustomAppenderConfig<E> {
 
     @Override
     protected void append(E e) {
-//        System.out.println("append =========");
         final byte[] payload = encoder.encode(e);
-
-        BASE64Encoder base64Encoder = new BASE64Encoder();
-        String encode = base64Encoder.encode(payload);
         final Long timestamp = isAppendTimestamp() ? getTimestamp(e) : null;
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
+//        String ttp = simpleDateFormat.format(timestamp);
+//        String curr = simpleDateFormat.format(System.currentTimeMillis());
+//        System.out.println("ttp === "+ttp+" || curr === "+curr);
 
-        LogRecord<byte[]> record = new LogRecord<>(payload,System.currentTimeMillis(),serverName, appid, securityKey,((LoggingEvent) e).getLevel().levelStr);
+        LogRecord<byte[]> record = new LogRecord<>(payload,timestamp,serverName, appid, securityKey,((LoggingEvent) e).getLevel().levelStr);
         if (request != null) {
             request.request(loadbalanceRule,payload,record, e,logSavePath, failedDeliveryCallback);
         } else {
@@ -92,7 +92,15 @@ public class LogbackCustomAppender<E> extends LogbackCustomAppenderConfig<E> {
     @Override
     public void start(){
         // only error free appenders should be activated
-        if (!checkPrerequisites()) return;
+        if (!checkPrerequisites()) {
+            return;
+        }
+//        System.out.println("TimeZone === before"+TimeZone.getDefault()); //输出当前默认时区
+//        final TimeZone zone = TimeZone.getTimeZone("GMT+8"); //获取中国时区
+//        TimeZone.setDefault(zone); //设置时区
+//        System.out.println("TimeZone === after"+TimeZone.getDefault()); //输出验证
+
+
         if(!regist(serverName,indexRegistPath)){
             addError("索引创建失败 create index failed");
             return;

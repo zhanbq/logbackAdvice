@@ -1,9 +1,12 @@
 package com.rmxc.utils.logcollector.request;
 
+import ch.qos.logback.classic.spi.LoggingEvent;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rmxc.utils.logcollector.loadbalancer.Rule;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -13,15 +16,20 @@ import java.util.concurrent.TimeUnit;
 
 public class OkHttpRequest implements Request {
 
+    private static final Logger log = LoggerFactory.getLogger(OkHttpRequest.class);
+
     OkHttpClient okHttpClient;
 
 
 
     private OkHttpRequest() {
-        this.okHttpClient = new OkHttpClient()
-                .newBuilder()
-                .readTimeout(1000, TimeUnit.MILLISECONDS)
-                .writeTimeout(1000, TimeUnit.MILLISECONDS)
+        if(null == okHttpClient){
+            this.okHttpClient = new OkHttpClient();
+        }
+        okHttpClient.newBuilder()
+                .connectTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .readTimeout(5 * 60 * 1000, TimeUnit.MILLISECONDS)
+                .writeTimeout(5 * 60 * 1000, TimeUnit.MILLISECONDS)
                 .build();
     }
 
@@ -41,16 +49,22 @@ public class OkHttpRequest implements Request {
                 .post(requestBody)
                 .build();
         Call call = okHttpClient.newCall(postRequest);
-//        System.out.println("loadbalanceRule = [" + loadbalanceRule + "], record = [" + record + "], e = [" + event + "], failedDeliveryCallback = [" + failedDeliveryCallback + "]");
+
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                log.error("发送日志失败: {}",e);
                 failedDeliveryCallback.onFailedRequest(event,e);
+//                call.cancel();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //do nothing
+//                log.debug("发送日志成功:{}",response);
+                if(null != response){
+
+                    response.body().close();
+                }
             }
         });
     }
@@ -69,13 +83,17 @@ public class OkHttpRequest implements Request {
                 .build();
         Call call = okHttpClient.newCall(postRequest);
 //        System.out.println("loadbalanceRule = [" + loadbalanceRule + "], record = [" + record + "], e = [" + event + "], failedDeliveryCallback = [" + failedDeliveryCallback + "]");
+        Response response = null;
         try {
-            Response response = call.execute();
+            response = call.execute();
             return response.isSuccessful();
         } catch (IOException e) {
             return false;
         }finally {
-            //单例 不关闭
+            if(null != response){
+
+                response.body().close();
+            }
         }
     }
 
@@ -140,7 +158,7 @@ public class OkHttpRequest implements Request {
 
     private static class SingletonRequest {
         /* private */
-        static Request instance = new OkHttpRequest();
+        static final Request instance = new OkHttpRequest();
     }
     public static Request getInstance() {
         // 外围类能直接访问内部类（不管是否是静态的）的私有变量

@@ -28,4 +28,14 @@ target
 data/*
 logPath_IS_UNDEFINED/
 
+
 **/.idea/
+
+# IntelliJ
+web/web.iml
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
