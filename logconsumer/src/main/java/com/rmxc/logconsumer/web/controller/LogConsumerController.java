@@ -48,7 +48,7 @@ public class LogConsumerController extends LogConsumerBaseController{
         log.info("日志输入:serverName:{}\n content:{}",logRecord.getServerName(),base64Encoder);
 
         SimpleDateFormat ymFormat = new SimpleDateFormat("yyyy-MM");
-        SimpleDateFormat hsmFormat = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm.SSS");
+        SimpleDateFormat hsmFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String mounth = ymFormat.format(new Date(logRecord.getTimestamp()));
         String hms = hsmFormat.format(logRecord.getTimestamp());
 
@@ -69,13 +69,13 @@ public class LogConsumerController extends LogConsumerBaseController{
         logBean.setLogTime(hms);
         IndexResponse indexResponse = esBusiness.addDocument(index, logBean);
         if(logRecord.getLogLevel().equalsIgnoreCase(Level.ERROR.levelStr)){
-//            try {
-//                DingTalkUtils.sendMessage(logRecord.getAppid(),logRecord.getServerName(),indexResponse.getIndex(),indexResponse.getId(),base64Encoder);
-//            } catch (NoSuchAlgorithmException e) {
-//                log.debug("发送钉钉失败 NoSuchAlgorithmException ",e);
-//            } catch (InvalidKeyException e) {
-//                log.debug("发送钉钉失败 InvalidKeyException ",e);
-//            }
+            try {
+                DingTalkUtils.sendMessage(logRecord.getAppid(),logRecord.getServerName(),indexResponse.getIndex(),indexResponse.getId(),base64Encoder);
+            } catch (NoSuchAlgorithmException e) {
+                log.debug("发送钉钉失败 NoSuchAlgorithmException ",e);
+            } catch (InvalidKeyException e) {
+                log.debug("发送钉钉失败 InvalidKeyException ",e);
+            }
         }
 //        log.debug(JSON.toJSONString(indexResponse));
         return success();

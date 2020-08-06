@@ -26,7 +26,7 @@
             </encoder>
             <requestStrategy>okhttp3</requestStrategy>
             <serverName>${serverName}</serverName>
-            <hosts>127.0.0.1:20209</hosts>
+            <hosts>47.92.198.89:20209</hosts>
             <logSavePath>/logs/consumer/logback</logSavePath>
             <indexRegistPath>/logs/index/regist</indexRegistPath>
             <appid>pplmc-biz</appid>

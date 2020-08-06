@@ -41,6 +41,18 @@
         <dependency>
             <groupId>com.rmxc.utils</groupId>
             <artifactId>logcollector</artifactId>
+            <version>1.1.60</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.70</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
         </dependency>
     </dependencies>
 </project>
