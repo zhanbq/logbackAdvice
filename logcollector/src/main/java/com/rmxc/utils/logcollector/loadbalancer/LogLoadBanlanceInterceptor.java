@@ -6,6 +6,10 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
+/**
+ * @author Administrator
+ */
+@Deprecated
 public class LogLoadBanlanceInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {

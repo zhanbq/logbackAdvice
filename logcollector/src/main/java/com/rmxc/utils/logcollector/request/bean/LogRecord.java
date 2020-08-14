@@ -1,4 +1,4 @@
-package com.rmxc.utils.logcollector.request;
+package com.rmxc.utils.logcollector.request.bean;
 
 import ch.qos.logback.classic.Level;
 
@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author zhanbq
+ */
 public class LogRecord<T> implements Serializable {
 
 

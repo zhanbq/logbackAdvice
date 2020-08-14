@@ -2,6 +2,10 @@ package com.rmxc.utils.logcollector.request;
 
 import com.rmxc.utils.logcollector.enumeration.RequestStrategyEnum;
 
+/**
+ * 客户端单例  静态内部类是最好的单例模式,不建议doublecheck实现
+ * @author zhanbq
+ */
 public class RequestFactory {
 
     public static Request getSingletonInstance(String requestType){

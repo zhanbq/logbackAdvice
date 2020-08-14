@@ -1,11 +1,16 @@
 package com.rmxc.utils.logcollector.loadbalancer;
 
+import com.rmxc.utils.logcollector.exception.BaseLogCollectorException;
+import com.rmxc.utils.logcollector.exception.LogCollectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author zhanbq
+ */
 public class RoundRobinRule extends AbstractLoadBalancerRule{
     private static Logger log = LoggerFactory.getLogger(RoundRobinRule.class);
     private AtomicInteger nextServerCyclicCounter;
@@ -53,10 +58,15 @@ public class RoundRobinRule extends AbstractLoadBalancerRule{
         }
 
         if (count >= 10) {
+            //没有找到可用服务
             log.warn("No available alive servers after 10 tries from load balancer: "
                     + lb);
         }
-        return server;
+        //返回null
+        if(server == null){
+            throw new LogCollectorException("all server is not ready to serve");
+        }
+        return server ;
     }
     /**
      * Inspired by the implementation of {@link AtomicInteger#incrementAndGet()}.

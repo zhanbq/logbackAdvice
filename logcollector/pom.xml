@@ -10,8 +10,8 @@
     <!--</parent>-->
     <groupId>com.rmxc.utils</groupId>
     <artifactId>logcollector</artifactId>
-    <version>1.1.60</version>
-<!--    <version>dev</version>-->
+<!--    <version>1.1.60</version>-->
+    <version>dev</version>
     <name>logcollector</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

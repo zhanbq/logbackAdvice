@@ -11,10 +11,10 @@ import com.rmxc.utils.logcollector.request.OkHttpRequest;
 import com.rmxc.utils.logcollector.request.Request;
 import com.rmxc.utils.logcollector.request.RequestFactory;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public abstract class LogbackCustomAppenderConfig<E> extends UnsynchronizedAppenderBase<E> implements AppenderAttachable<E> {
+/**
+ * @author zhanbq
+ */
+public abstract class AbstractLogbackCustomAppenderConfig<E> extends UnsynchronizedAppenderBase<E> implements AppenderAttachable<E> {
 
     protected boolean appendTimestamp = true;
     protected Request request;

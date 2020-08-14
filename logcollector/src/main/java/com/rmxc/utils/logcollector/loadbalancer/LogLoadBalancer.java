@@ -1,9 +1,12 @@
 package com.rmxc.utils.logcollector.loadbalancer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 负载 单例
+ * @author Administrator
+ */
 public class LogLoadBalancer implements LoadBalancer {
 
     List<LogServer> logServers;
@@ -23,8 +26,8 @@ public class LogLoadBalancer implements LoadBalancer {
     }
 
 
-    public void setLogServers(String hosts, String path) {
-        String http = "http://";
+    private void setLogServers(String hosts, String path) {
+        String protocol = "http://";
         if (null == hosts || "".equals(hosts)) {
             logServers = new ArrayList<>();
             return;
@@ -34,31 +37,45 @@ public class LogLoadBalancer implements LoadBalancer {
         if(path==null || path ==""){
             for (String host : hostArray) {
                 LogServer logServer = new LogServer();
-                logServer.setHost(http + host);
+                logServer.setHost(protocol + host);
+                String[] ipAndPort = host.split(":");
+                if(ipAndPort != null || ipAndPort.length > 0){
+                    logServer.setIp(ipAndPort[0]);
+                    logServer.setPort(ipAndPort[1]);
+                }
+
                 logServers.add(logServer);
             }
         }else{
 
             for (String host : hostArray) {
                 LogServer logServer = new LogServer();
-                logServer.setHost(http + host + path);
+                logServer.setHost(protocol + host + path);
+                String[] ipAndPort = host.split(":");
+                if(ipAndPort != null || ipAndPort.length > 0){
+                    logServer.setIp(ipAndPort[0]);
+                    logServer.setPort(ipAndPort[1]);
+                }
                 logServers.add(logServer);
             }
         }
     }
 
-    private static class InnerSingletion {
+    private static class InnerSingleton {
 
         private static LogLoadBalancer instance = new LogLoadBalancer();
 
     }
 
     public static LogLoadBalancer getSingletonLB(String hosts, String path) {
-        InnerSingletion.instance.setLogServers(hosts, path);
-        return InnerSingletion.instance;
+        InnerSingleton.instance.setLogServers(hosts, path);
+        return InnerSingleton.instance;
     }
     public static LogLoadBalancer getSingletonLB(String hosts) {
-        InnerSingletion.instance.setLogServers(hosts,null);
-        return InnerSingletion.instance;
+        InnerSingleton.instance.setLogServers(hosts,null);
+        return InnerSingleton.instance;
+    }
+    public static LogLoadBalancer getSingletonLB() {
+        return InnerSingleton.instance;
     }
 }

@@ -4,11 +4,17 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 
+/**
+ * @author zhanbq
+ */
+@Deprecated
 public class MyLogbackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     Layout<ILoggingEvent> layout;
 
-    //自定义配置 
+    /**
+     *     自定义配置
+     */
     String printString;
 
     @Override

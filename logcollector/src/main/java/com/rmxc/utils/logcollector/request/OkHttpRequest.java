@@ -1,9 +1,11 @@
 package com.rmxc.utils.logcollector.request;
 
-import ch.qos.logback.classic.spi.LoggingEvent;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.rmxc.utils.logcollector.config.LogCollectorDefaultConfig;
+import com.rmxc.utils.logcollector.loadbalancer.LogServer;
 import com.rmxc.utils.logcollector.loadbalancer.Rule;
+import com.rmxc.utils.logcollector.request.bean.LogRecord;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +16,18 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * OKHttp版本传输请求的代码实现,
+ * 如果需要apache版本实现 重新实现接口即可,
+ * 二者性能基本无差距
+ *  okhttp更加灵活 扩展性更强
+ * @author zhanbq
+ */
 public class OkHttpRequest implements Request {
 
+    /**
+     * log初始化完毕 ,这里可以使用log
+     */
     private static final Logger log = LoggerFactory.getLogger(OkHttpRequest.class);
 
     OkHttpClient okHttpClient;
@@ -35,14 +47,16 @@ public class OkHttpRequest implements Request {
 
 
     @Override
-    public <T,E> void request(Rule loadbalanceRule, byte[] payload, LogRecord<T> record, E event, String requestPath,FailedRequestCallback<E> failedDeliveryCallback) {
+    public <T,E> void request(Rule loadbalanceRule, byte[] payload, LogRecord<T> record, E event, String requestPath, FailedRequestCallback<E> failedDeliveryCallback) {
         if(null == okHttpClient || null == loadbalanceRule){
             return;
         }
 
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.create(mediaType, JSON.toJSONString(record));
+        //获取负载算法 筛选的host
         String url = loadbalanceRule.choose().getHost()+requestPath;
+
         url = getUrlWithQueryString(url,record.buildParams());
         okhttp3.Request postRequest = new okhttp3.Request.Builder()
                 .url(url)
@@ -60,7 +74,6 @@ public class OkHttpRequest implements Request {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                log.debug("发送日志成功:{}",response);
                 if(null != response){
 
                     response.body().close();
@@ -82,7 +95,6 @@ public class OkHttpRequest implements Request {
                 .post(requestBody)
                 .build();
         Call call = okHttpClient.newCall(postRequest);
-//        System.out.println("loadbalanceRule = [" + loadbalanceRule + "], record = [" + record + "], e = [" + event + "], failedDeliveryCallback = [" + failedDeliveryCallback + "]");
         Response response = null;
         try {
             response = call.execute();
@@ -102,6 +114,12 @@ public class OkHttpRequest implements Request {
 
     }
 
+    /**
+     * 组装表单请求 参数
+     * @param url
+     * @param params
+     * @return
+     */
     public static String getUrlWithQueryString(String url, Map<String, String> params) {
         if (params == null) {
             return url;
@@ -117,7 +135,10 @@ public class OkHttpRequest implements Request {
         int i = 0;
         for (String key : params.keySet()) {
             String value = params.get(key);
-            if (value == null) { // 过滤空的key
+            /*
+            过滤空的key
+             */
+            if (value == null) {
                 continue;
             }
 
@@ -155,7 +176,9 @@ public class OkHttpRequest implements Request {
     }
 
 
-
+    /**
+     * 单例
+     */
     private static class SingletonRequest {
         /* private */
         static final Request instance = new OkHttpRequest();
@@ -164,4 +187,37 @@ public class OkHttpRequest implements Request {
         // 外围类能直接访问内部类（不管是否是静态的）的私有变量
         return SingletonRequest.instance;
     }
+
+    @Override
+    public Boolean ping(LogServer logServer){
+        String pingPath = "/serv/ping";
+        String url = logServer.getHost()+ LogCollectorDefaultConfig.HEARTBEAT_DETECTION_PATH;
+        okhttp3.Request getRequest = new okhttp3.Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        Call call = okHttpClient.newCall(getRequest);
+        Response response = null;
+        try {
+            response = call.execute();
+            String result = response.body().string();
+            if(!response.isSuccessful()){
+                logServer.setAlive(false);
+                logServer.setReadyToServe(false);
+            }
+            log.info("ping server:{} port:{} result:{}",logServer.getIp(),logServer.getPort(),result);
+            return response.isSuccessful();
+        } catch (IOException e) {
+            log.error("ping server IOException 网络IO异常, serverInfo,",logServer);
+            logServer.setAlive(false);
+            logServer.setReadyToServe(false);
+            return false;
+        }finally {
+            if(null != response){
+
+                response.body().close();
+            }
+        }
+    }
+
 }
