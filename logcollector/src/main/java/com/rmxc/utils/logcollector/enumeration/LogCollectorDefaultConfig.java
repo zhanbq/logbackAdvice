@@ -1,4 +1,4 @@
-package com.rmxc.utils.logcollector.config;
+package com.rmxc.utils.logcollector.enumeration;
 
 import okhttp3.OkHttpClient;
 

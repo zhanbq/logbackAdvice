@@ -1,6 +1,6 @@
 package com.rmxc.utils.logcollector.monitor;
 
-import com.rmxc.utils.logcollector.config.LogCollectorDefaultConfig;
+import com.rmxc.utils.logcollector.enumeration.LogCollectorDefaultConfig;
 import com.rmxc.utils.logcollector.loadbalancer.LogServer;
 import com.rmxc.utils.logcollector.request.LogServerCheckRequestThreadPool;
 import com.rmxc.utils.logcollector.request.OkHttpRequest;

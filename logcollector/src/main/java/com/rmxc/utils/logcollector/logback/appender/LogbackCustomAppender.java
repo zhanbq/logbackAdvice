@@ -3,6 +3,7 @@ package com.rmxc.utils.logcollector.logback.appender;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.spi.AppenderAttachableImpl;
+import com.rmxc.utils.logcollector.config.FirstInitChecker;
 import com.rmxc.utils.logcollector.loadbalancer.LoadBalancer;
 import com.rmxc.utils.logcollector.loadbalancer.LogLoadBalancer;
 import com.rmxc.utils.logcollector.logback.config.AbstractLogbackCustomAppenderConfig;
@@ -22,7 +23,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author zhanbq
  */
 public class LogbackCustomAppender<E> extends AbstractLogbackCustomAppenderConfig<E> {
-
     private final ConcurrentLinkedQueue<E> queue = new ConcurrentLinkedQueue<E>();
     private final AppenderAttachableImpl<E> aai = new AppenderAttachableImpl<E>();
     /**
@@ -97,19 +97,24 @@ public class LogbackCustomAppender<E> extends AbstractLogbackCustomAppenderConfi
 
     @Override
     public void start() {
-
         // only error free appenders should be activated
         // 检查所有的配置项是否正确,如果失败 报错 阻止项目启动
         if (!checkPrerequisites()) {
             return;
         }
-        //开启日志心跳检测
-        LogServerChecker4Logback logServerChecker4Logback = new LogServerChecker4Logback(LogLoadBalancer.getSingletonLB().getAllServers());
-        logServerChecker4Logback.isAlive();
-        logServerChecker4Logback.ping();
+        if(FirstInitChecker.getChecker().getFristInit()){
 
-        //开启本地服务监控
-        webMonitoringAttach();
+            //开启日志心跳检测
+            LogServerChecker4Logback logServerChecker4Logback = new LogServerChecker4Logback(LogLoadBalancer.getSingletonLB().getAllServers());
+            logServerChecker4Logback.isAlive();
+            logServerChecker4Logback.ping();
+
+            //开启本地服务监控
+//            webMonitoringAttach();
+
+
+            FirstInitChecker.getChecker().setFristInit(false);
+        }
 
         if (!regist(serverName, indexRegistPath)) {
             //关闭心跳检测
@@ -118,6 +123,7 @@ public class LogbackCustomAppender<E> extends AbstractLogbackCustomAppenderConfi
             addError("索引创建失败 create index failed,可能是服务期宕机,服务进程程shutdown,或服务内部异常");
             return;
         }
+
         super.start();
     }
 

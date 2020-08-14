@@ -72,6 +72,10 @@ public class LogLoadBalancer implements LoadBalancer {
         return InnerSingleton.instance;
     }
     public static LogLoadBalancer getSingletonLB(String hosts) {
+        List<LogServer> allServers = InnerSingleton.instance.getAllServers();
+        if(allServers!=null && allServers.size()!=0){
+            return InnerSingleton.instance;
+        }
         InnerSingleton.instance.setLogServers(hosts,null);
         return InnerSingleton.instance;
     }

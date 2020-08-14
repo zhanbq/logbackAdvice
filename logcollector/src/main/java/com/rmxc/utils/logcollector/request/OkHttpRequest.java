@@ -2,7 +2,7 @@ package com.rmxc.utils.logcollector.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.rmxc.utils.logcollector.config.LogCollectorDefaultConfig;
+import com.rmxc.utils.logcollector.enumeration.LogCollectorDefaultConfig;
 import com.rmxc.utils.logcollector.loadbalancer.LogServer;
 import com.rmxc.utils.logcollector.loadbalancer.Rule;
 import com.rmxc.utils.logcollector.request.bean.LogRecord;
@@ -205,6 +205,7 @@ public class OkHttpRequest implements Request {
                 logServer.setAlive(false);
                 logServer.setReadyToServe(false);
             }
+            System.out.println("ping server:{"+logServer.getIp()+"} port:{"+logServer.getPort()+"} result:{"+result+"}");
             log.info("ping server:{} port:{} result:{}",logServer.getIp(),logServer.getPort(),result);
             return response.isSuccessful();
         } catch (IOException e) {
