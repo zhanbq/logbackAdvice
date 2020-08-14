@@ -200,7 +200,8 @@ public class OkHttpRequest implements Request {
         Response response = null;
         try {
             response = call.execute();
-            String result = response.body().string();
+            ResponseBody body = response.body();
+            String result = String.valueOf(body);
             if(!response.isSuccessful()){
                 logServer.setAlive(false);
                 logServer.setReadyToServe(false);
