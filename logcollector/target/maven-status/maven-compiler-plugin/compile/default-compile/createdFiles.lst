@@ -2,8 +2,6 @@ com\rmxc\utils\logcollector\loadbalancer\LogLoadBalancer$1.class
 com\rmxc\utils\logcollector\request\FailedRequestCallback.class
 com\rmxc\utils\logcollector\request\LogServerCheckRequestThreadPool.class
 com\rmxc\utils\logcollector\loadbalancer\Rule.class
-com\rmxc\utils\logcollector\logback\appender\CustomLogbackAppender$1.class
-com\rmxc\utils\logcollector\logback\appender\CustomLogbackAppender.class
 com\rmxc\utils\logcollector\request\AsynchronousRequesStrategy.class
 com\rmxc\utils\logcollector\request\bean\LogRecord.class
 com\rmxc\utils\logcollector\loadbalancer\LogLoadBanlanceInterceptor.class
@@ -11,6 +9,7 @@ com\rmxc\utils\logcollector\loadbalancer\RoundRobinRule.class
 com\rmxc\utils\logcollector\hex\MD5.class
 com\rmxc\utils\logcollector\loadbalancer\LoadBalancer.class
 com\rmxc\utils\logcollector\monitor\ServerChecker.class
+com\rmxc\utils\logcollector\logback\appender\LogbackCustomAppender$1.class
 com\rmxc\utils\logcollector\loadbalancer\LogServer.class
 com\rmxc\utils\logcollector\request\LogServerCheckRequestThreadPool$SingleTon.class
 com\rmxc\utils\logcollector\request\RequestStrategy.class
@@ -28,5 +27,6 @@ com\rmxc\utils\logcollector\request\OkHttpRequest.class
 com\rmxc\utils\logcollector\logback\appender\MyLogbackAppender.class
 com\rmxc\utils\logcollector\logback\config\AbstractLogbackCustomAppenderConfig.class
 com\rmxc\utils\logcollector\request\RequestFactory.class
+com\rmxc\utils\logcollector\logback\appender\LogbackCustomAppender.class
 com\rmxc\utils\logcollector\monitor\BaseLogServerChecker.class
 com\rmxc\utils\logcollector\loadbalancer\LogLoadBalancer$InnerSingleton.class

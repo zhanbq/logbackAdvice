@@ -10,17 +10,18 @@ import com.rmxc.utils.logcollector.monitor.LogServerChecker4Logback;
 import com.rmxc.utils.logcollector.request.FailedRequestCallback;
 import com.rmxc.utils.logcollector.request.LogServerCheckRequestThreadPool;
 import com.rmxc.utils.logcollector.request.bean.LogRecord;
+import com.taobao.arthas.agent.attach.ArthasAgent;
+import net.bytebuddy.agent.ByteBuddyAgent;
+import org.slf4j.MDC;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author zhanbq
  */
-public class CustomLogbackAppender<E> extends AbstractLogbackCustomAppenderConfig<E> {
+public class LogbackCustomAppender<E> extends AbstractLogbackCustomAppenderConfig<E> {
 
     private final ConcurrentLinkedQueue<E> queue = new ConcurrentLinkedQueue<E>();
     private final AppenderAttachableImpl<E> aai = new AppenderAttachableImpl<E>();
@@ -45,6 +46,7 @@ public class CustomLogbackAppender<E> extends AbstractLogbackCustomAppenderConfi
         } else {
             failedDeliveryCallback.onFailedRequest(e, null);
         }
+
     }
 
     @Override
@@ -101,10 +103,13 @@ public class CustomLogbackAppender<E> extends AbstractLogbackCustomAppenderConfi
         if (!checkPrerequisites()) {
             return;
         }
-        //开启心跳检测
+        //开启日志心跳检测
         LogServerChecker4Logback logServerChecker4Logback = new LogServerChecker4Logback(LogLoadBalancer.getSingletonLB().getAllServers());
         logServerChecker4Logback.isAlive();
         logServerChecker4Logback.ping();
+
+        //开启本地服务监控
+        webMonitoringAttach();
 
         if (!regist(serverName, indexRegistPath)) {
             //关闭心跳检测
@@ -129,6 +134,15 @@ public class CustomLogbackAppender<E> extends AbstractLogbackCustomAppenderConfi
          * 设置时区
          */
         TimeZone.setDefault(zone);
+    }
+
+    private void webMonitoringAttach(){
+        Map<String, String> configMap = new HashMap<>();
+        configMap.put("port","8899");
+        ArthasAgent arthasAgent = new ArthasAgent(configMap,null,true, ByteBuddyAgent.install());
+
+        arthasAgent.init();
+
     }
 
 

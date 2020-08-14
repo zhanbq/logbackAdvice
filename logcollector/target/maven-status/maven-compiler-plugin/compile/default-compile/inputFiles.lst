@@ -1,8 +1,10 @@
+E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\exception\BaseLogCollectorException.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\OkHttpRequest.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\Request.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\RequestStrategy.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\bean\LogRecord.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\logback\config\AbstractLogbackCustomAppenderConfig.java
+E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\config\LogCollectorDefaultConfig.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\RequestFactory.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\monitor\LogServerChecker4Logback.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\request\AsynchronousRequesStrategy.java
@@ -12,6 +14,7 @@ E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\lo
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\App.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\AbstractLoadBalancerRule.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\LogLoadBalancer.java
+E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\exception\LogCollectorException.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\LogServer.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\logback\appender\MyLogbackAppender.java
 E:\code\work\人民信产\pplmc-log\logcollector\src\main\java\com\rmxc\utils\logcollector\loadbalancer\LogLoadBanlanceInterceptor.java

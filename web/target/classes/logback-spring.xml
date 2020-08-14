@@ -19,7 +19,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <appender name="rmxcLogAppender" class="com.rmxc.utils.logcollector.logback.appender.CustomLogbackAppender">
+        <appender name="rmxcLogAppender" class="com.rmxc.utils.logcollector.logback.appender.LogbackCustomAppender">
             <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
                 <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
                 <charset>UTF-8</charset>

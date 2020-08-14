@@ -15,6 +15,9 @@
     <name>logcollector</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <arthas.version>3.3.9</arthas.version>
+
     </properties>
     <dependencies>
 
@@ -46,7 +49,28 @@
             <artifactId>jsr305</artifactId>
             <version>3.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.taobao.arthas</groupId>
+            <artifactId>arthas-agent-attach</artifactId>
+            <version>${arthas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.taobao.arthas</groupId>
+            <artifactId>arthas-packaging</artifactId>
+            <version>${arthas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>1.4.32</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.8.12</version>
+        </dependency>
 
     </dependencies>
     <distributionManagement>

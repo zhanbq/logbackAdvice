@@ -20,7 +20,12 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.alibaba:fastjson:1.2.70" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.taobao.arthas:arthas-agent-attach:3.3.9" level="project" />
+    <orderEntry type="library" name="Maven: org.zeroturnaround:zt-zip:1.14" level="project" />
+    <orderEntry type="library" name="Maven: com.taobao.arthas:arthas-packaging:3.3.9" level="project" />
+    <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy-agent:1.4.32" level="project" />
+    <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy:1.8.12" level="project" />
   </component>
 </module>

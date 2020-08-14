@@ -4,6 +4,9 @@ import com.rmxc.tech.dagger.base.enums.ApiCallReturnCodeEnum;
 import com.rmxc.tech.dagger.runtime.web.bean.result.ApiBaseResult;
 import com.rmxc.tech.dagger.runtime.web.bean.result.ApiCallReturnCode;
 
+/**
+ * @author zhanbq
+ */
 public class LogConsumerBaseController {
 
     protected ApiBaseResult success(){
